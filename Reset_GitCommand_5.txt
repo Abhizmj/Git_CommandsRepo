@@ -1,0 +1,209 @@
+Git Command
+-------------
+1) To remove changes from staging area
+2) To undo commit at repository level
+
+To remove changes from staging area
+---------------------------------------
+
+Example: Create a Folder ,inside folder create a file named file1.txt,Add it to staging area.
+Suppose We add the file from working dir to staging area, then we find that somethings went wrong in code
+Then we want to undo ,Then there we use reset command.Opposite of add command.
+
+	-----------------------------------------------------------------------------------------
+	|											|
+	|	Working Dir --->	Staging Area --->	Local Repo --->	 Remote Repo	|
+	|											|
+	|	file1.txt		file1.txt						|		 
+	|											|
+	|											|
+	-----------------------------------------------------------------------------------------
+we can check the file in working dir by git command: ls
+
+we can check the file present in statging area or not : git ls-files
+
+TO undo the process before commiting : 
+			
+				1) git reset <file1.txt>
+
+	-----------------------------------------------------------------------------------------
+	|											|
+	|	Working Dir --->	Staging Area --->	Local Repo --->	 Remote Repo	|
+	|											|
+	|	file1.txt									|		 
+	|											|
+	|											|
+	-----------------------------------------------------------------------------------------
+
+To undo commit at repository level
+-------------------------------------
+
+Create 3 file in working directory,and added to staging and commit it.(file1.txt,file2.txt,file3.txt)
+
+Example: 		git add file1.txt
+			
+			git commit -m "committed file1"
+OR			
+			git add file1.txt;git commit -m "committed file1"
+
+For other two files same
+
+			git add file2.txt;git commit -m "committed file2"
+
+			git add file3.txt;git commit -m "committed file3"
+
+To know how many commit we done with commit ID:
+		
+			git log --oneline
+
+The latest commit will be the HEAD,HEAD is pointing to latest commit
+
+	-------------------------------------------------------------------------------------------------
+	|												|
+	|	Working Dir --->	Staging Area --->	Local Repo --->	 Remote Repo		|
+	|												|
+	|	file1.txt		file1.txt		|-commit 3 (HEAD->master) Latest	|		| 							|					|
+	|	file2.txt		file2.txt		|-commit 2				|
+	|	file3.txt		file3.txt		|-commit 1				|
+	|							|					|
+	-------------------------------------------------------------------------------------------------
+Based on commit ID we can reset it.
+
+				2) git reset <mode> <commit id>
+
+Here <mode> says that where we have to do changes 
+Moves the HEAD to the specified commit ,and all remaining recent commits will be removed.
+Mode will decide whether these changes are going to remove from staging area and working directory or not.
+==> there is 3 type of mode:
+			i) --mixed (default mode,if we don't mention then also it mode)
+			ii) --soft
+			iii) --hard
+
+	a) Using --mixed mode
+	---------------------
+	Suppose we wanted to discard the most latest commit ,
+	It is default mode .
+	To Discard the commit in Local Repo and to Staging area as wellwe should reset with --mixed option.
+	It will not touch the working dir.
+
+	To discard the lastest commit the we should not use the lastest commit id ,Instead we use pervious commid id ie.commit 2
+
+	Example:		3) git reset --mixed <commit id2> 
+
+	
+	-------------------------------------------------------------------------------------------------
+	|												|
+	|	Working Dir --->	Staging Area --->	Local Repo --->	 Remote Repo		|
+	|												|
+	|	file1.txt		file1.txt		| 					|		|	file2.txt 		file2.txt		|
+	|	file3.txt					|-commit 2 (HEAD->master) Latest	|
+	|							|-commit 1				|
+	|							|					|
+	-------------------------------------------------------------------------------------------------
+
+	We can check the file : In Working repo --> ls
+	we can check the file in staging area   --> git ls-files
+	To check how many commit left 		--> git log --oneline
+
+	Still the file is in working dir and the file removed from staging area.
+
+	b) Using --soft mode
+	---------------------
+
+	It is exactly same as --mixed option,but changes are available in Working directory and staging area.
+	It won't touch staging area and working directory.
+	As changes already present in staging area, just we have to use commit to revert back.
+	
+	Again we add the file3 in staging and commit it: 
+
+				git add file3.txt;git commit -m "addind file3 again"
+
+	-------------------------------------------------------------------------------------------------
+	|												|
+	|	Working Dir --->	Staging Area --->	Local Repo --->	 Remote Repo		|
+	|												|
+	|	file1.txt		file1.txt		| 					|		|	file2.txt 		file2.txt		|-commit 3 (HEAD->master) Latest	|
+	|	file3.txt		file3.txt		|-commit 2 				|
+	|							|-commit 1				|
+	|							|					|
+	-------------------------------------------------------------------------------------------------
+
+	Now we are discarding latest commit :
+		
+				4) git reset --soft <commit id2>
+
+	-------------------------------------------------------------------------------------------------
+	|												|
+	|	Working Dir --->	Staging Area --->	Local Repo --->	 Remote Repo		|
+	|												|
+	|	file1.txt		file1.txt		| 					|		|	file2.txt 		file2.txt		|	 				|
+	|	file3.txt		file3.txt		|-commit 2 (HEAD->master) Latest	|
+	|							|-commit 1				|
+	|							|					|
+	-------------------------------------------------------------------------------------------------
+
+	Still file3 is present in both Working dir and staging area.
+
+	c) Using --hard mode
+	---------------------
+
+	It is exactly same as --mixed except that Changes will be remove from everywhere 
+	(local repo, staging area, working directory)
+	It is impossible to revert back and hence while using hard reset we have to take special care.
+	Permantly removing the file
+
+	As file 3 is in staging area ,just only we have to commit to keep copy in Local repo,
+	Again we commit for file3.txt
+
+					git commit -m "committed file3 again"
+
+	-------------------------------------------------------------------------------------------------
+	|												|
+	|	Working Dir --->	Staging Area --->	Local Repo --->	 Remote Repo		|
+	|												|
+	|	file1.txt		file1.txt		| 					|		|	file2.txt 		file2.txt		|-commit 3 (HEAD->master) Latest	|
+	|	file3.txt		file3.txt		|-commit 2 				|
+	|							|-commit 1				|
+	|							|					|
+	-------------------------------------------------------------------------------------------------
+		
+	Now we discard the both commit 3(commit for file3) and commit 2(commit for file2),
+	So we have to give pervious commit id ie. commit id 1,then after commit 1(commit for file1) all other
+	commit get discarded.
+
+				5) git reset --hard <commit id1>
+
+	-----------------------------------------------------------------------------------------
+	|											|
+	|	Working Dir --->	Staging Area --->	Local Repo --->	 Remote Repo	|
+	|											|
+	|	file1.txt		file1.txt		commit 1 (HEAD -->Master) Latest|		 
+	|											|
+	|											|
+	-----------------------------------------------------------------------------------------
+	
+Summary
+--------
+
+1) --mixed:
+		Changes will be discarded in local repo and staging area.
+		It won't touch working directory.
+		Woking tree won't be clean.
+		But we can revert with:
+			git add.
+			git commit	
+
+2) --soft:
+		Changes will be discarded only in local repo
+		It won't touch staging area and working directory
+		Working tree won't be clean.
+		But we can revert with :
+			git commit
+
+3) --hard :
+		Changes will be discarded everywhere.
+		Working tree won't be clean.
+		No way to revert
+
+
+			

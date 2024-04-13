@@ -1,0 +1,84 @@
+Git Command
+------------
+Suppose we have some file in working dir ,staging area and local repo as well.
+And we want to remove any file either from working dir or from staging area or from Local repo:
+Then we use git rm command:
+
+Example: Create a Folder and create 3 different text file ,let say
+		file1.txt
+		file2.txt
+		file3.txt
+
+Make the folder a local repo :
+
+					git init
+
+To add all file to staging and commiting both at a time : 
+
+					git commit -a -m "3 files committed in First round"
+	-----------------------------------------------------------------------------------------
+	|											|
+	|	Working Dir --->	Staging Area --->	Local Repo --->	 Remote Repo	|
+	|											|
+	|	file1.txt		file1.txt		file1.txt			|		 
+	|	file2.txt		file2.txt		file2.txt			|
+	|	file3.txt		file3.txt		file3.txt			|
+	-----------------------------------------------------------------------------------------
+
+To see which files are present in Working dir :
+					
+					ls
+
+To see which files are present in Staging Area :
+
+					git ls-files
+
+Req 1:  Remove files both staging & Working directory
+-----------------------------------------------------
+To remove File1 from both Working and staging
+		
+				1) git rm file1.txt
+But still in Local we have 3 file ,and in working and staging we don't have file1.txt
+
+	-----------------------------------------------------------------------------------------
+	|											|
+	|	Working Dir --->	Staging Area --->	Local Repo --->	 Remote Repo	|
+	|											|
+	|							file1.txt			|		 
+	|	file2.txt		file2.txt		file2.txt			|
+	|	file3.txt		file3.txt		file3.txt			|
+	-----------------------------------------------------------------------------------------
+To Remove all file from both Working and Staging :
+
+				2) git rm -r .
+
+Req 2: Remove Files from only staging area not Working dir
+-----------------------------------------------------------
+Removing file2.txt
+		
+				3) git rm --staged file2.txt  OR git rm --chached file2.txt
+
+	-----------------------------------------------------------------------------------------
+	|											|
+	|	Working Dir --->	Staging Area --->	Local Repo --->	 Remote Repo	|
+	|											|
+	|							file1.txt			|		 
+	|	file2.txt					file2.txt			|
+	|	file3.txt		file3.txt		file3.txt			|
+	-----------------------------------------------------------------------------------------
+
+Req 2: Remove Files from only Working dir
+------------------------------------------
+Remove file3.txt
+
+				4) rm file3.txt
+
+	-----------------------------------------------------------------------------------------
+	|											|
+	|	Working Dir --->	Staging Area --->	Local Repo --->	 Remote Repo	|
+	|											|
+	|							file1.txt			|		 
+	|	file2.txt					file2.txt			|
+	|				file3.txt		file3.txt			|
+	-----------------------------------------------------------------------------------------
+

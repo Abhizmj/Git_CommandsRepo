@@ -1,0 +1,68 @@
+Git command
+--------------
+
+We can use checkout command to discard unstaged changes in tracked files of working directory.
+
+The files atlest once added to staging and in local repo(committed),then only we can say the files are TRACKED.
+
+Some changes which is not part of staging but changes are ther in Working Dir ie. Unstaged Changes
+
+1) Only for working directory
+2) To discard unstaged changes(The changes which are not add to staging area)
+3) In tracked files (The files which are already added to staging area/commit)
+
+Example: 
+Create a Folder ,create 1 file named "file1.txt",inside file1.txt add 2 line ,then save and Add to staging and commit it.
+Tracking file--> file1.txt
+Untracked file --> file2.txt
+
+To see the content of file2.txt 
+
+				1) cat file1.txt
+
+	-----------------------------------------------------------------------------------------
+	|											|
+	|	Working Dir --->	Staging Area --->	Local Repo --->	 Remote Repo	|
+	|											|
+	|	file1.txt		file1.txt		file1.txt			|		 
+	|	-----1st line		-----1st line		-----1st line			|
+	|	-----2nd line		-----2nd line		-----2nd line			|
+	|											|	
+	|											|
+	|											|
+	-----------------------------------------------------------------------------------------
+
+Now add 2 more line in working directory
+Unstaged changes : 3rd and 4th line (which not added and committed)
+
+	-----------------------------------------------------------------------------------------
+	|											|
+	|	Working Dir --->	Staging Area --->	Local Repo --->	 Remote Repo	|
+	|											|
+	|	file1.txt		file1.txt		file1.txt			|		 
+	|	-----1st line		-----1st line		-----1st line			|
+	|	-----2nd line		-----2nd line		-----2nd line			|
+	|	-----3rd line									|
+	|	-----4th line									|
+	|											|	
+	|											|
+	|											|
+	-----------------------------------------------------------------------------------------
+
+Now the Unstaged changes we want to discard from working dir ,then command will be:
+
+				2) git checkout -- file1.txt
+
+
+	-----------------------------------------------------------------------------------------
+	|											|
+	|	Working Dir --->	Staging Area --->	Local Repo --->	 Remote Repo	|
+	|											|
+	|	file1.txt		file1.txt		file1.txt			|		 
+	|	-----1st line		-----1st line		-----1st line			|
+	|	-----2nd line		-----2nd line		-----2nd line			|
+	|											|	
+	|											|
+	|											|
+	-----------------------------------------------------------------------------------------
+

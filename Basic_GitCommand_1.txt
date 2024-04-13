@@ -1,0 +1,71 @@
+Create a account in github
+In our account Create a new repository and then copy http of that repository.
+Install git from https://git-scm.com/download/win
+Create a folder in local pc.
+Inside folder right click and click git bash.
+Then :
+	git --version
+	
+	--> git --version tells you the version of git we are using.
+	
+	git clone HTTP_LINK
+
+	--> It take a clone from the Remote repository(github),The copied HTTP line Paste it .
+	
+	cd Your_Repo_name (Press tab)
+
+	--> Then you will come insde the repository and aslo you will find main as branch.    
+
+If you want to start from local pc then below process we can follow
+
+Git Command 
+------------
+	1) Git init 
+
+To initalize a git repository in our working directory so that git can track changes.
+
+	2) git config --global user.email "your email"
+	3) git config --global user.name "your name"
+
+To congfigure and do all change and store in your files in Remote repository(github)
+give Name and  Email by which you have account of github.
+
+	4) git status
+
+To check the status what changes or new file you have add or not.
+If any change you made it will show you in red color that the file is modified.
+
+	5) git add FileName
+	6) git add FileName1 FileName2
+	7) git add .
+
+git add . commands will add all file which is present in working directory.
+This all command will add to staging area,which is ready to commit.Now what ever changes you made the status
+will become green color
+
+	8) ls 
+
+ls is the command to check how and what file are present in the directory.
+
+	9) ls -a
+
+ls -a --> This command will give you All files present in Directory ie. Also hidden file,
+If we get .git/ then that mean this repo is in track by git.
+
+	10) git commit -m "Commit_message"
+
+we have to give commit message ,so that we can know what change we made we easy find by message.
+Git commit will commit your file and changes and also goes to Local repository from staging area
+
+Working directory --> staging area ---> Local repository
+			git add	---	git commit -m "----"
+
+	11) git commit -a -m "Commit message"
+
+The Above command is short to add as well as commit at a same time.
+
+	11) git log 
+
+git log will give how many commit you have made	,and also what message for each commit u have given.
+
+	12) git log 

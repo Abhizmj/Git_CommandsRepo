@@ -1,0 +1,181 @@
+Git Command For Difference
+---------------------------
+To compare the file in the version Control System.
+
+Working Directory --> Staging Area --> Local Repo
+
+Example : 
+Create a Folder and inside that Open Git bash
+
+	1) git init
+
+To create a file in the folder command will be
+
+	2) touch <File_Name>
+
+To Write Somthing inside the text file
+
+	3) vim <File_Name>
+	
+eg--> vim file.txt
+
+Then the editor will pop out ,press insert key from keybord,Write Something which will be the content
+inside the file.txt .And then press "wq!" to save.
+
+Again press git status, the add the file to staging area :
+
+	git status
+	git add file.text
+Then again we do changes in the file by add new content in next line,By this the change will be in Working,
+but not in Staging area.
+Repeate 2) 
+
+Req1: To see the difference in file content between Working directory and Staging area
+---------------------------------------------------------------------------------------
+
+	4) git diff <File_name>
+
+o/p--> diff --git a/File_name b/File_name
+	File_Name <Hash1..Hash2 Hash3>
+	--- a/File_Name
+	+++ b/File_name
+	@@ -1 +1,2 @@
+	 First line --> what you have written inside file before first adding to staging
+	+Second Line --> whatever written inside file after adding to staging.
+
+Here a and b representing source and destination,In git Source is Staging area here and Working directory is 
+target/destination :
+a/File_Name --> represent source(staging area)
+b/File_Name --> represent destination(working dir)
+
+hash1 --> Hash of file content from source/staging
+hash2 --> Hash of file content from Destination/working Dir
+
+hash3 --> git file mode(It contains two part: 1. First 3 number represent Type of the file
+						2. Second 3 digit represent the file permission) As Git follows the linex command ,ie. 4 -read permission
+			2-write permission
+			1- execute permission
+			6--> 2+4 read and write permission
+--- a/File_Name --> Source file missing some line (staging)
++++ b/File_name --> New lines added in destination file (Working dir)
+
+-1 --> in staging area 1 line is missing
++1,2 --> in working directory 1 line is add and having 2 line 
+
+ First line --> unchanged
++Second line --> This content is added
+
+In above two represents: if anyline prefixed with space means it is unchanged.
+			 if anyline prefixed with + means it is added in destination copy.
+			 if anyline prefixed with - means it is removed from destination copy.
+
+	
+Req2: To see the difference in file content between Working directory and Last commit
+---------------------------------------------------------------------------------------
+ 			git commit -m "First commit having single line"
+
+the above command send the copy to local repo ,which was perviously in staging area with one line content.
+Now again we want to add 3rd line in the file which will be in Working repo, repeate 2)
+The last commit always refered by HEAD.
+
+			5) git diff HEAD <File_Name>
+
+o/p--> diff --git a/File_name b/File_name
+	File_Name <Hash1..Hash2 Hash3>
+	--- a/File_Name
+	+++ b/File_name
+	@@ -1 +1,3 @@
+	 First line --> what you have written inside file before first adding to staging
+	+Second Line --> whatever written inside file after adding to staging.
+	+Third Line --> whatever written inside file after 1st commit.
+
+Req3: To see the difference in file content between Staged Copy and Last commit
+---------------------------------------------------------------------------------------
+
+To represent the staged we generally use --staged
+
+Cuurently we are having one line in staging area,now we add the file from working directory which have file containing 3 line to staging area
+
+		git add <File_name>
+
+Now in staging we have file which have 3 line and in Local repo Which we commited at last has 1 line content in file
+
+To compare Statging and Local:
+			
+			6) git diff --stated HEAD <File_Name>
+
+OR			7) git diff --chached HEAD <File_Name> 
+
+
+
+o/p--> diff --git a/File_name b/File_name
+	File_Name <Hash1..Hash2 Hash3>
+	--- a/File_Name
+	+++ b/File_name
+	@@ -1 +1,3 @@
+	 First line --> what you have written inside file before first adding to staging
+	+Second Line --> whatever written inside file after adding to staging.
+	+Third Line --> whatever written inside file after 1st commit.
+
+Req4: To see the difference in file content between specific commit and Working Directory Copy
+----------------------------------------------------------------------------------------------
+Specific commit means may we in future we have 3 commits, among any one we can compare with working dir.
+
+		git commit -m "Second Commit File Contains 3 line"
+
+In working directory we add 4 th line in the file by again using 2)
+So in 1st commit file have 1 line 
+and in 2nd commit file have 3 lines
+and in working dir ,inside file we have 4 line
+Last commit is here 2nd commit whuch is HEAD now.
+
+To which commit we want to compare we need to know the commit ID
+
+			8) git log --oneline
+
+--> This will give the all commit history with commit ID
+
+To compare the working dir with specific commit
+
+			9) git diff <Commit ID> <File_name>
+
+
+ o/p--> diff --git a/File_name b/File_name
+	File_Name <Hash1..Hash2 Hash3>
+	--- a/File_Name
+	+++ b/File_name
+	@@ -1 +1,4 @@
+	 First line --> what you have written inside file before first adding to staging
+	+Second Line --> whatever written inside file after adding to staging.
+	+Third Line --> whatever written inside file before 1st commit.
+	+Fourth Line --> whatever written inside file before add and commit 2nd commit.
+	
+Req5: To see the difference in file content between specific commit and Staging area Copy
+----------------------------------------------------------------------------------------------
+
+			10) git diff --staged <commit ID>
+
+Req6: To see the difference in file content between 2 specific commit 
+----------------------------------------------------------------------------------------------
+
+			11) git diff <commit id1> <commit id2>
+
+- represent for source
++ represent for destination
+
+Req7: To see the difference in file content between 2 Branches 
+----------------------------------------------------------------------------------------------
+
+			12) git diff <branch 1> <branch 2>
+
+Example: master
+	test	
+		git diff master test
+
+Req8: To see the difference in file content between Local(PC) and Remote Repository(github) 
+----------------------------------------------------------------------------------------------
+
+			13) git diff master origin/master
+
+--> The above command after diff master is local ,and in remote we have origin and inside origin there may be many branches,we can also just give the origin/<any other branch which is created in remote>
+

@@ -62,7 +62,7 @@ The latest commit will be the HEAD,HEAD is pointing to latest commit
 	|												|
 	|	Working Dir --->	Staging Area --->	Local Repo --->	 Remote Repo		|
 	|												|
-	|	file1.txt		file1.txt		|-commit 3 (HEAD->master) Latest	|									|					|					|
+	|	file1.txt		file1.txt		|-commit 3 (HEAD->master) Latest	|
 	|	file2.txt		file2.txt		|-commit 2				|
 	|	file3.txt		file3.txt		|-commit 1				|
 	|							|					|

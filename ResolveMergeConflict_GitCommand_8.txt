@@ -1,0 +1,205 @@
+Resolve Merge Conflic in Git
+-----------------------------
+Genrally in three way merge ,after creation of child branch ,we do change in child branch as well as we do multiple commits,
+And paralelly in main branch we do multiple commits ,When we try to merge feature(Child branch) with main ,then conflict will occur.
+We have to reslove the conflict ,then we merge those changes to main branch.
+
+
+Example :
+		 1) Create a folder ,inside that folder open git bash ,make it git repo:
+
+								git init
+
+		2) Create a text file eg. test.txt and add content just one line "This is my first line"
+
+								touch test.txt
+
+		---------------------------------
+		||           test.txt	       ||
+		---------------------------------
+		|  --> This is first Line	|
+		|				|
+		|				|
+		|				|
+		|				|
+		---------------------------------	
+	
+		3) To see the content inside the text file :
+
+								cat <FileName>
+						exmaple:	cat test.txt
+		
+		4) Add to staging as well as local repo:
+
+								git add test.txt; git commit -m "message...."
+						example:	git add test.txt; git commit -m "MC1"  
+
+		5) Addind one more line in test.txt and add to staging and commit again with different message.
+
+								git add test.txt; git commit -m "MC2" 
+
+		Now we are have two line in test.txt given below:
+
+								
+		---------------------------------
+		||           test.txt	       ||
+		---------------------------------
+		|  --> This is first Line	|
+		|  --> This the second Line	|
+		|				|
+		|				|
+		|				|
+		---------------------------------	
+
+		6) To check the number of commit done in main/master branch.
+
+								git log --oneline
+
+		7) Create new branch from main ,by this the 2 commits and the file will inherit into feature branch.
+
+								git checkout -b "feature"
+
+		Now we are in feature branch,the same number of commit and changes is inherited from main
+
+								git log --oneline
+
+		8) Now in feature branch ,we add 3rd line in test.txt and add it to staging area and commit also.We can also add content by command
+
+								vim test.test
+		An Editor will open ,we have to press Insert key,and save it by using command : :wq!
+
+		9) To see the content inside file :
+
+								cat test.txt
+
+		10) Adding and commiting to local repo :
+	
+								git add test.txt;git commit -m "FC1"
+
+		Now we are have 3rd line in test.txt given below:
+
+								
+		---------------------------------
+		||           test.txt	       ||
+		---------------------------------
+		| --> This is first Line	|
+		| --> This the second Line	|
+		| --> Added new line by feature	|
+		|				|
+		|				|
+		---------------------------------
+
+		Total we have 3 commits in feature if we check the commits : 	git log --oneline
+
+		11) Now paralelly in main branch we do changes to create a conflict
+
+								git checkout main
+
+		12) In main branch the number of commits is 2 :	git log --oneline
+		    The content in the file for main branch 
+
+		---------------------------------
+		||           test.txt	       ||
+		---------------------------------
+		|  --> This is first Line	|
+		|  --> This the second Line	|
+		|				|
+		|				|
+		|				|
+		---------------------------------	
+
+		13) Now adding new line in test.txt file and add to staging area and commit it
+
+		---------------------------------
+		||           test.txt	       ||
+		---------------------------------
+		| --> This is first Line	|
+		| --> This the second Line	|
+		| --> Added new line by main	|
+		|				|
+		|				|
+		---------------------------------
+
+								git add test.txt;git commit -m "MC3"	
+	
+		Now we have 3 commits in main branch(MC1,MC2,MC3)
+		
+		14) Now same file we have done changes in both main and feature branch.We merge the faeture with main :
+
+								git merge feature
+
+		From above command we get CONFLICT ,it will not merge, we have to first resolve the conflict.
+		15) Immediately Press command to resolve.
+
+								cat test.txt
+
+		o/p -->  This is first Line
+			 This the second Line
+			<<<<<<<<<<<< HEAD
+			Added new line by main
+			==========
+			Added new line by feature
+			>>>>>>>>>>>> feature 
+
+		Explaination : 	This is first Line----\
+							> This two line coming from head ,this are common 
+			 	This the second Line--/
+
+		15) To resolve manually ,we can also open vs code editor or also by using in this bash itself:
+
+								vim test.txt
+
+		As I have decided to keep both ,we can also keep one changes as your wish ,Above command we open editor to edit
+		Which ever line you don't want we can delete it ,Just Press Insert key from keyboard,then Press "dd" that line will be deleted.
+		Then save the file by pressing ":wq!wq"
+
+		16) Now if we check the content :		cat test.txt
+
+		o/p -->  This is first Line
+			 This the second Line
+			Added new line by main
+			Added new line by feature
+	
+
+		17) As soon as we resolve this conflict ,we add to staging and commit it and merge also(By this new commit will be created by git)
+
+								git add test.txt; git commit -m "MC"
+
+		Now totally we have 5 commits 
+
+		18) If you want to see in graphically:
+		
+								git log --online --graph
+
+		19) If we want to be repository clean then we can delete the feature branch :
+
+								git branch -d <BranchName>
+
+		example:					git branch -d feature
+
+							
+
+
+						HEAD			HEAD (Total 3 commit)
+				---------	---------		 --------		    -------------
+MAIN Branch --------------------|	|-------|	|		 |	|		    |		|			  
+				|  MC1	|	|  MC2	|-------|--------| MC3	|-------------------|	 MC	|---------------		
+				|	|	|	|	|	 |	|		    -------------		
+				---------	---------	|	 --------			/\  	
+								|	test.txt			||	
+				test.txt	test.txt	|	------				|| Merge
+				  ----		  ----		|	----			       	||
+						  ----		|	=====(by main)			||		
+								|					||
+								|					||
+								|					||
+								|	test.txt			||		
+								|	----				||
+								|	----			        ||
+								|	----- (by feature)		||					
+								|					||      
+								|	---------			||	 		      
+								|-------|	|			||			      	
+					Feature Branch (MC1,MC2)-->	|  FC1	|-----------------------||
+					3 commits			|	|	
+									---------	

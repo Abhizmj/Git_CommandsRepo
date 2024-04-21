@@ -1,0 +1,238 @@
+Git Merger commands
+--------------------
+				---------	---------	
+MAIN Branch --------------------|	|-------|	|						Merge
+				|  C1	|	|  C2	|-------|-------------------------------------------------		
+				|	|	|	|	|					/\
+				---------	---------	|					||
+								|	---------	---------	||
+								|-------|	|	|	|	||
+					Feature Branch (C1,C2)-->	|  C3	|-------|  C4	|-------||---------------
+									|	|	|	|
+									---------	---------
+
+					Total commits in Feature branch C1,C2,C3,C4
+
+---->	Merging means combining the changes to main branch.
+
+=============================================================================================================================================================
+----> There is two kinds of merging :
+					1) Fast forward merge
+					2) Three -way merge
+
+1) Fast forward merge: - When the commits in main branch done and after that new branch created and the new branch have commited ,were there is no commit 
+			done in main branch after creating new branch.Then when we merge the new branch with main then there will be no merge conflit as 			well as no new commit in main and changes in main.
+			So in fast forward merge we do changes only in child branch.We don't touches parent branch.
+
+
+						HEAD
+				---------	---------	
+MAIN Branch --------------------|	|-------|	|						HEAD(4 commits)
+				|  C1	|	|  C2	|-------|---------(NO COMMITS and NO CHANGES)---[]-------------		
+				|	|	|	|	|					/\
+				---------	---------	|					||
+								|	---------	---------	|| Merge
+								|-------|	|	|	|	||
+					Feature Branch (C1,C2)-->	|  C3	|-------|  C4	|-------||---------------
+									|	|	|	|
+									---------	---------
+
+
+	Before Creating new branch HEAD is pointing to C2 commits,After creating new branch(Feature branch) and the last commit C4 when merged to main,
+	then C4 will be the HEAD.
+
+2) Three -way merge : - When the commits in main branch done and after that we create new branch from main and does some change in existing code and 
+			does some commit in child branch,
+			At the same timing parallely in main branch some changesr or development happened and commits also done.
+			Then while merging the code of new branch(child branch) with main then MERGE CONFLITS occurs.
+			Changes and commits made in both main as well as child branch.
+
+
+						HEAD						HEAD (Merge Conflits) (Total 6 commit)
+				---------	---------	
+MAIN Branch --------------------|	|-------|	|		---------		  --------------
+				|  C1	|	|  C2	|-------|-------|	|-----------------|MERGE COMMIT|-------------		
+				|	|	|	|	|	|  CM3	|		  |	       |			
+				---------	---------	|	|	|		  --------------	
+								|	---------			/\  Merge
+								|				       /||\
+								|					||	
+								|					||
+								|	---------	---------	|| 
+								|-------|	|	|	|	||
+					Feature Branch (C1,C2)-->	|  CF3	|-------|  CF4	|-------||---------------
+					4 commits			|	|	|	|
+									---------	---------
+
+	The changes of main branch after 2nd commit will not reflect or impact in child branch.Similarly the changes we are doing in child branch,
+	will not be there in main branch.Both have parallel developed.Suppose the changes(Udating existing file) in file after commit 2 (C2) and 
+	the child branch also does changes in the same file ,Then merge conflits will occur,other wise no conflits happens.
+
+	So to handel such conflits,after merging child with main then git will create new commit called "Merge Commit".	
+	Previously HEAD is pointing to CM3 after merging HEAD will pointed to "Merge commit".
+============================================================================================================================================================
+
+	A) FAST FORWARD MERGE
+=============================================================================================
+
+Example: 
+
+	1) Create a folder ,inside rigth click and open git bash ,make it git reposistory using command:
+	
+						git init
+	
+	2) Create two files eg. a.txt and b.txt and add to staging and commit it to have copy in local repo. :
+
+						touch a.txt b.txt
+						git add a.txt ;git commit -m "C1M"
+						git add b.txt ;git commit -m "C2M"
+
+	3) To see what are the commit so far we have done: 
+		
+						git log --oneline
+
+	4) Now Create new branch and switch to new branch as well :
+
+						git checkout -b feature
+
+	5) By the above command now we have two branches ,to see how many branches we have :
+
+						git branch
+
+	 So we are in feature branch as * symbol is on feature branch.
+
+	6) In feature branch we create two files eg. x.txt and y.txt and add them to staging as well as local repo :
+
+						touch x.txt y.txt
+						git add x.txt ;git commit -m "C1F"
+						git add y.txt ;git commit -m "C2F"
+
+	So totally till now we have 4 commits in feature branch because it will be inherited from parent branch (main branch)
+
+	7) To see how many files in working directory in feature branch:
+
+						ls
+
+	From Above command we get : o/p--> a.txt b.txt x.txt y.txt
+	
+	8) To see how many commits in feature command will be : 
+
+						git log --oneline
+
+	9) Now we have to merger to main branch ,we do only in main branch ,so we have to switch to main ,Then command will be :
+
+						git checkout main
+
+					====>	git merge <branchName>
+
+				ex: 		git merge feature
+
+
+				---------	---------	
+MAIN Branch --------------------|	|-------|	|						HEAD(4 commits)
+				|  C1M	|	|  C2M	|-------|---------------------------------------[C2F]-------------		
+				|	|	|	|	|					/\
+				---------	---------	|					||
+								|	---------	---------	|| Merge
+								|-------|	|	|	|	||
+					Feature Branch (C1M,C2M)-->	|  C1F	|-------|  C2F	|-------||---------------
+									|	|	|	|
+									---------	---------
+
+============================================================================================================================================================
+
+	B) THREE -WAY MERGE
+=====================================================================================
+
+Example : 
+
+	
+	1) Create a folder ,inside rigth click and open git bash ,make it git reposistory using command:
+	
+						git init
+	
+	2) Create two files eg. a.txt and b.txt and add to staging and commit it to have copy in local repo. :
+
+						touch a.txt b.txt
+						git add a.txt ;git commit -m "C1M"
+						git add b.txt ;git commit -m "C2M"
+
+	3) To see what are the commit so far we have done: 
+		
+						git log --oneline
+
+	4) Now Create new branch and switch to new branch as well :
+
+						git checkout -b feature
+
+	5) By the above command now we have two branches ,to see how many branches we have :
+
+						git branch
+
+	 So we are in feature branch as * symbol is on feature branch.
+
+	6) In feature branch we create two files eg. x.txt and y.txt and add them to staging as well as local repo :
+
+						touch x.txt y.txt
+						git add x.txt ;git commit -m "C1F"
+						git add y.txt ;git commit -m "C2F"
+
+	So totally till now we have 4 commits in feature branch because it will be inherited from parent branch (main branch)
+
+	7) Switch back to master/main branch :
+
+						git checkout main
+
+	8) To see how many files in working dir of main branch :
+
+						ls
+	
+	9) To see number of commit made in main :
+
+						git ls --oneline
+
+	Here in main we have 2 commits and 2 files and in feature we have 4 commits and 4 files.
+
+	10) Now we add one more file in main branch :
+
+						touch c.txt
+						git add c.txt ;git commit -m "C3M"
+	
+	Check the file present in main branch : ls			(a.txt ,b.txt c.txt)
+	Total commit in main :			git log --oneline 	(C1M,C2M,C3M)
+
+	11) Now we merge the feature with main,for that we have to be in main branch itself.
+
+						git merge feature
+
+	By the above command ,the new editor will be open : we just have to press :wq!
+	To save and merger,by this git will create a "merge commit" and pointer we move to latest commit as HEAD.
+	o/p--> It will give as recursive stategy ie. Three way merge.
+	
+	Currently we donot have any conflit , because we just add a new file in main branch and we doesn't do any changes in existing file before C3M.
+	Totally 6 commit ,if we check : 	git log --oneline
+	
+	Optionally we can remove the child branch if you want to,it will not impact in main branch.
+ 
+ 
+
+
+						HEAD						HEAD (Total 6 commit)
+				---------	---------	
+MAIN Branch --------------------|	|-------|	|		---------		  --------------
+				|  C1M	|	|  C2M	|-------|-------|	|-----------------|MERGE COMMIT|-------------		
+				|	|	|	|	|	|  C3M	|		  |	       |			
+				---------	---------	|	|	|		  --------------	
+								|	---------			/\  Merge
+								|				       /||\
+								|					||	
+								|					||
+								|	---------	---------	|| 
+								|-------|	|	|	|	||
+					Feature Branch (C1M,C2M)-->	|  C1F	|-------|  C2F	|-------||---------------
+					4 commits			|	|	|	|
+									---------	---------
+
+
+			
+			

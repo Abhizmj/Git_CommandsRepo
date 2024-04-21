@@ -1,0 +1,153 @@
+Git Branching Command
+----------------------
+
+		---------		---------
+		|	|		|	|
+  MAIN Branch	|  C1	|---------------|  C2	|-------|----------------------------------------------------------------------------
+  (Remote)	|	|		|	|	|						/\			/\
+		---------		---------	|						||			||
+							|						|| Merge		|| Merge
+							|						||			||
+							|	---------		---------	||			||
+							----|---|	|		|	|     	||			||
+                        	      Feature Branch1	    | 	|  C1	|---------------|   C2	|-------||-------- PUSH	(Local)	||
+							    |	|	|		|	|				||
+							    |	---------		---------				||	
+							    |									||
+							    |									||	
+							    |									||
+							    |	---------		---------				||
+							    ----|	|		|	|				||
+                                      Feature Branch 2		|  C1	|---------------|  C2	|-------------------------------||-------- PUSH (Local)
+								|	|		|	|
+								---------		---------
+
+==========================================================================================================================================================
+
+Why we need branching: 
+			Let say we have done some coding in master branch and have commit several times,C1 ,C2,C3 ....so on.
+			And Let say Another devloper came how also wants to devlope the code and add code to the project.
+			So He/She have to take a branch from main branch and start coding and committing in its feature branch.
+			Similarly Other devloper does the work.
+			Without disturbing the main branch ,we can do changes and later we commit it to remote and merge it to main.
+
+			When the devloper create new branch from main,it inherite all the files and commits of main ie. till what the commit happens.
+By using Git branch parallel devlopment will take place.
+As soon as we created new branch will inherite all the files and commits from the main branch,but these branches are independent,
+ie. Whatever changes or file you made that will not affect to main branch.Whatever commits we are doing in main branch in future ,those commit will not be the part of feature branch,until and unless we merge the code.
+
+For Example:
+		--> Create a folder in local pc,right click and open git bash,make the floder as git repo: git init
+		--> Inside Floder create one text file :	a.txt
+		--> Add to staging and commit to local repo.: 	git add a.txt
+								git commit -m "....message..."
+
+Git command
+------------
+	1) To view branches:			git branch
+
+	The above command tell you how many branches are created or there,and which branch you are currently at.
+	* represent the active branch.So we are current working on that branch.
+
+	2) To create new branch:		git branch <Branch_Name>
+
+	Example : 	git branch br1
+
+	The above command will create new branch from the main.
+	Now if we again use 1) ,then it will show two branch,but still you are in main/master branch.So whatever file we created that will be 
+	avilable in br1 branch
+
+	3) To switch to different branch:	git checkout <Branch_Name>
+
+	The above command will switch one branch to another branch.
+OR	2) and 3) we can direct ctreate as well as switch or go inside the another branch:
+
+						git branch <Branch_Name>----------------|
+											|>--------git checkout -b <Branch_Name>
+						git checkout <Branch_Name>--------------|
+
+			Let create one more branch from main ,this time ctreating the branch and getting into it also.
+
+						git checkout -b br2
+
+			Now from above command if we want to see how many branches we have and currently in which branch we are: git branch
+
+			Then we will find the the * symbol will on br2 branch(currently we are in br2 ) and there were 3 branches main ,br1 and br2
+
+	Now switching to main branch : git checkout main
+	Create two more files eg. b.txt and c.txt :
+
+						touch b.txt c.txt
+
+	The above command is used to create file in folder,to write content inside the file we have to run command :
+
+						vim b.txt
+
+	Then we write content by pressing insert key from keyboard and the Write whatever we want and then save it by writing command at bottom :
+ 
+						!wq
+
+	Now both files b.txt and c.txt we add to staging as well as commit it to local repo:
+
+						git add b.txt;git commit -m "message..."
+						git add c.txt;git commit -m "message..."
+	
+	If we want to see how many files are in staging area : 
+						
+						git ls-files
+
+	What are commit so far we have done if we want to see then we have command : 
+		
+						git log --oneline
+
+	As we have created br1 and br2 branch after 1st commit when a.txt file is created. So after commiting in main branch the br1 and br1 also 
+	have a.txt,whatever the commits and file created in main that all will inherited in br1 and br2 as well.
+
+	Here in main branch we have 3 files a.txt b.txt and c.txt,But in br1 branch we only have a.txt which is inherited from main ,Similarly in br2
+	also have a.txt,As we just created b.txt and c.txt but not added and commited,so it will not there in br1 and br2 branch.
+	
+	Inside br1 branch ,create two file eg. x.txt and y.txt ,by using touch command.Add and commit the x.txt and y.txt both.
+
+				---> git checkout br1		
+				---> touch x.txt y.txt
+				---> git add x.txt; git commit -m "message..."
+				---> git add y.txt; git commit -m "message..."
+
+	So now there will be 3 files avialable (a.txt ,x.txt and y.txt) in br1 branch ,to see command will be : 
+	
+						ls-files
+
+	Whate changes in br1 branch will not affect to main branch ,still main branch have 3 files a,b,c.txt file
+	Switch to main branch we can check :	git checkout main
+
+	Check the files:			ls 			(for working dir)	o/p --> a.txt b.txt c.txt
+
+						git ls-files 		(for staging area)	o/p --> a.txt b.txt c.txt
+
+
+					1st commit		2nd commit	3rd commit
+		main branch................[a.txt]------|---------[b.txt]-------[c.txt]---------
+							|
+							|
+							|	2nd commit	3rd commit
+				br1 branch->	[a.txt]	|----------[x.txt]------[y.txt]---------
+							|
+							|
+							|
+				br2 branch->	[a.txt]	|----------
+
+
+	Summary
+----------------------
+	1) Once we create any new branch,so what ever files are commits which is already done in Parent branch,which will be inherited in child branch.
+	2) In the child branch we can create any new files or we can change exixting files and do n numbers to commit in the that branch,which will on
+	   impact in the parent.
+	3) Here all brances are isolated
+	4) Onces the changes commpleted then we can push the entire code into remote repo or merge those changes into main branch.
+	
+					
+		
+		
+							
+							 
+			
